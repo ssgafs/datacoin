@@ -1,29 +1,30 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
-    <title>Ваша игра</title>
-    <script>
-        let userScore = 0;
-
-        function incrementScore() {
-            userScore += 1;
-            document.getElementById("score").textContent = userScore;
-        }
-
-        function sendScore() {
-            const xhr = new XMLHttpRequest();
-            xhr.open("POST", "http://localhost:5000/update_score", true);
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            const userId = localStorage.getItem('user_id');
-            const data = JSON.stringify({ score: userScore, user_id: userId });
-            xhr.send(data);
-        }
-    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tap Game</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
-    <h1>Ваша игра</h1>
-    <p>Счет: <span id="score">0</span></p>
-    <button onclick="incrementScore()">Тап!</button>
-    <button onclick="sendScore()">Отправить счет</button>
+    <h1>Tap Game</h1>
+    <p>Нажмите кнопку, чтобы заработать очки.</p>
+    <button id="tapButton">Tap me!</button>
+    <p id="score">Счет: 0</p>
+
+    <script>
+        let score = 0;
+
+        function updateScore() {
+            score += 1;
+            document.getElementById('score').innerText = 'Счет: ' + score;
+
+            Telegram.WebApp.sendData(score.toString());
+        }
+
+        document.getElementById('tapButton').addEventListener('click', updateScore);
+
+        Telegram.WebApp.ready();
+    </script>
 </body>
 </html>
